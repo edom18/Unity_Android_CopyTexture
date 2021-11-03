@@ -6,14 +6,17 @@ using UnityEngine.UI;
 
 public class TestNativeCppRender : MonoBehaviour
 {
-    [SerializeField] private RawImage _rawImage1 = null;
-    [SerializeField] private RawImage _rawImage2 = null;
+    [SerializeField] private RawImage _rawImage = null;
     [SerializeField] private int _width = 512;
     [SerializeField] private int _height = 512;
+    [SerializeField] private Camera _camera;
+
+    private byte[] _data = null;
+    private RenderTexture _renderTexture;
 
     // PluginFunction
     [DllImport("nativecpprender")]
-    private static extern bool SetupNativeTextureRender(IntPtr textureId1, IntPtr textureId2, int width, int height);
+    private static extern bool SetupNativeTextureRender(IntPtr textureId1, byte[] data, int width, int height);
 
     [DllImport("nativecpprender")]
     private static extern void FinishNativeTextureRender();
@@ -23,23 +26,22 @@ public class TestNativeCppRender : MonoBehaviour
 
     private void Start()
     {
-        // var texture = new Texture2D(_width, _height, TextureFormat.ARGB32, false);
-        var texture1 = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
-        texture1.Create();
-        var texture2 = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
-        texture2.Create();
+        _renderTexture = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
+        _renderTexture.Create();
         
-        _rawImage1.texture = texture1;
-        _rawImage2.texture = texture2;
+        _rawImage.texture = _renderTexture;
+        _camera.targetTexture = _renderTexture;
+
+        _data = new byte[_width * _height * 4];
         
-        if (SetupNativeTextureRender(texture1.GetNativeTexturePtr(), texture2.GetNativeTexturePtr(), texture1.width, texture1.height) == false)
+        if (SetupNativeTextureRender(_renderTexture.GetNativeTexturePtr(), _data, _renderTexture.width, _renderTexture.height) == false)
         {
             return;
         }
 
         // StartCoroutine(NativeTextureRenderLoop());
     }
-
+    
     private void Update()
     {
         if (Input.touchCount > 0)
@@ -54,12 +56,19 @@ public class TestNativeCppRender : MonoBehaviour
 
     private void OnDestroy()
     {
+        _renderTexture.Release();
         FinishNativeTextureRender();
     }
 
     private void IssueEvent(int eventID)
     {
+        RenderTexture back = RenderTexture.active;
+        RenderTexture.active = _renderTexture;
         GL.IssuePluginEvent(GetRenderEventFunc(), eventID);
+        RenderTexture.active = back;
+
+        Debug.Log(_data[0]);
+        Debug.Log(_data[1]);
     }
 
     // private IEnumerator NativeTextureRenderLoop()
