@@ -45,21 +45,12 @@ extern "C" void FinishNativeTextureRender()
 
 static void ReadPixels()
 {
-//    int currentFBO;
-//    glGetIntegerv(GL_FRAMEBUFFER, &currentFBO);
-//
-//    glBindFramebuffer(GL_FRAMEBUFFER, currentFBO);
-
-    int currentFBORead;
     int currentFBOWrite;
-    glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &currentFBORead);
     glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &currentFBOWrite);
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, currentFBOWrite);
 
     glReadPixels(0, 0, g_texWidth, g_texHeight, GL_RGBA, GL_UNSIGNED_BYTE, g_data);
-
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, currentFBORead);
 }
 
 static void UNITY_INTERFACE_API OnRenderEvent( int eventID )

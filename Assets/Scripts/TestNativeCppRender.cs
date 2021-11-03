@@ -34,7 +34,7 @@ public class TestNativeCppRender : MonoBehaviour
         _renderTexture = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
         _renderTexture.Create();
 
-        _result = new Texture2D(_width, _height, TextureFormat.ARGB32, false);
+        _result = new Texture2D(_width, _height, TextureFormat.RGBA32, false);
         _resultImage.texture = _result;
 
         _rawImage.texture = _renderTexture;
@@ -49,7 +49,7 @@ public class TestNativeCppRender : MonoBehaviour
             return;
         }
 
-        // StartCoroutine(NativeTextureRenderLoop());
+        StartCoroutine(NativeTextureRenderLoop());
     }
 
     private void Update()
@@ -59,7 +59,7 @@ public class TestNativeCppRender : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
-                IssueEvent(Input.touchCount >= 2 ? 2 : 1);
+                IssueEvent();
             }
         }
     }
@@ -71,14 +71,14 @@ public class TestNativeCppRender : MonoBehaviour
         FinishNativeTextureRender();
     }
 
-    private void IssueEvent(int eventID)
+    private void IssueEvent()
     {
         RenderTexture back = RenderTexture.active;
         RenderTexture.active = _renderTexture;
-        GL.IssuePluginEvent(GetRenderEventFunc(), eventID);
+        GL.IssuePluginEvent(GetRenderEventFunc(), 1);
         RenderTexture.active = back;
 
-        Debug.Log("!!!!!!!!!!!!!!!!");
+        // Debug.Log("!!!!!!!!!!!!!!!!");
 
         GetData();
 
@@ -93,12 +93,12 @@ public class TestNativeCppRender : MonoBehaviour
         _nativeArray.CopyTo(_data);
     }
 
-    // private IEnumerator NativeTextureRenderLoop()
-    // {
-    //     while (true)
-    //     {
-    //         yield return new WaitForEndOfFrame();
-    //         GL.IssuePluginEvent(GetRenderEventFunc(), 1);
-    //     }
-    // }
+    private IEnumerator NativeTextureRenderLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            IssueEvent();
+        }
+    }
 }
