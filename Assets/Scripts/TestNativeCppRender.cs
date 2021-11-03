@@ -9,13 +9,14 @@ using UnityEngine.UI;
 public class TestNativeCppRender : MonoBehaviour
 {
     [SerializeField] private RawImage _rawImage = null;
+    [SerializeField] private RawImage _resultImage = null;
     [SerializeField] private int _width = 512;
     [SerializeField] private int _height = 512;
     [SerializeField] private Camera _camera;
 
     private byte[] _data = null;
     private RenderTexture _renderTexture;
-
+    private Texture2D _result;
     private NativeArray<byte> _nativeArray;
 
     // PluginFunction
@@ -32,21 +33,25 @@ public class TestNativeCppRender : MonoBehaviour
     {
         _renderTexture = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
         _renderTexture.Create();
-        
+
+        _result = new Texture2D(_width, _height, TextureFormat.ARGB32, false);
+        _resultImage.texture = _result;
+
         _rawImage.texture = _renderTexture;
         _camera.targetTexture = _renderTexture;
 
         _data = new byte[_width * _height * 4];
         _nativeArray = new NativeArray<byte>(_width * _height * 4, Allocator.Persistent);
-        
-        if (SetupNativeTextureRender(_renderTexture.GetNativeTexturePtr(), _nativeArray.GetUnsafePtr(), _renderTexture.width, _renderTexture.height) == false)
+
+        if (SetupNativeTextureRender(_renderTexture.GetNativeTexturePtr(), _nativeArray.GetUnsafePtr(), _renderTexture.width,
+            _renderTexture.height) == false)
         {
             return;
         }
 
         // StartCoroutine(NativeTextureRenderLoop());
     }
-    
+
     private void Update()
     {
         if (Input.touchCount > 0)
@@ -62,6 +67,7 @@ public class TestNativeCppRender : MonoBehaviour
     private void OnDestroy()
     {
         _renderTexture.Release();
+        _nativeArray.Dispose();
         FinishNativeTextureRender();
     }
 
@@ -73,8 +79,18 @@ public class TestNativeCppRender : MonoBehaviour
         RenderTexture.active = back;
 
         Debug.Log("!!!!!!!!!!!!!!!!");
-        // Debug.Log(_data[0]);
-        // Debug.Log(_data[1]);
+
+        GetData();
+
+        _result.SetPixelData(_nativeArray, 0, 0);
+        _result.Apply();
+
+        Debug.Log("==================");
+    }
+
+    private void GetData()
+    {
+        _nativeArray.CopyTo(_data);
     }
 
     // private IEnumerator NativeTextureRenderLoop()
