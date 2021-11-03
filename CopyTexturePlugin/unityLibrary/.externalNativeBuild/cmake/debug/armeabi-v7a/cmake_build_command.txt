@@ -1,0 +1,14 @@
+Executable : D:\MyDesktop\UnityHub\2019.4.14f1\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\cmake\3.6.4111459\bin\cmake.exe
+arguments : 
+-HD:\MyDesktop\Unity-Projects\CopyTexture\CopyTexturePlugin\unityLibrary\src\main\cpp
+-BD:\MyDesktop\Unity-Projects\CopyTexture\CopyTexturePlugin\unityLibrary\.externalNativeBuild\cmake\debug\armeabi-v7a
+-DANDROID_ABI=armeabi-v7a
+-DANDROID_PLATFORM=android-19
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=D:\MyDesktop\Unity-Projects\CopyTexture\CopyTexturePlugin\unityLibrary\build\intermediates\cmake\debug\obj\armeabi-v7a
+-DCMAKE_BUILD_TYPE=Debug
+-DANDROID_NDK=D:\MyDesktop\UnityHub\2019.4.14f1\Editor\Data\PlaybackEngines\AndroidPlayer\NDK
+-DCMAKE_TOOLCHAIN_FILE=D:\MyDesktop\UnityHub\2019.4.14f1\Editor\Data\PlaybackEngines\AndroidPlayer\NDK\build\cmake\android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=D:\MyDesktop\UnityHub\2019.4.14f1\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\cmake\3.6.4111459\bin\ninja.exe
+-GAndroid Gradle - Ninja
+jvmArgs : 
+

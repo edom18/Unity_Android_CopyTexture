@@ -1,0 +1,11 @@
+com/unity3d/player/R.java
+ com.unity3d.player.R
+ com.unity3d.player.R$style
+com/DefaultCompany/CopyTexture/BuildConfig.java
+ com.DefaultCompany.CopyTexture.BuildConfig
+com/DefaultCompany/CopyTexture/R.java
+ com.DefaultCompany.CopyTexture.R
+ com.DefaultCompany.CopyTexture.R$id
+ com.DefaultCompany.CopyTexture.R$mipmap
+ com.DefaultCompany.CopyTexture.R$string
+ com.DefaultCompany.CopyTexture.R$style

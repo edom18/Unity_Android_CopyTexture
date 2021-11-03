@@ -1,0 +1,8 @@
+Executable : D:\MyDesktop\UnityHub\2019.4.14f1\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\cmake\3.6.4111459\bin\cmake.exe
+arguments : 
+--build
+D:\MyDesktop\Unity-Projects\CopyTexture\CopyTexturePlugin\unityLibrary\.externalNativeBuild\cmake\debug\armeabi-v7a
+--target
+native-lib
+jvmArgs : 
+

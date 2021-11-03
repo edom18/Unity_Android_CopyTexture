@@ -1,0 +1,4 @@
+#Wed Nov 03 16:43:57 JST 2021
+base.0=D\:\\MyDesktop\\Unity-Projects\\CopyTexture\\CopyTexturePlugin\\launcher\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+renamed.0=classes.dex
+path.0=classes.dex
