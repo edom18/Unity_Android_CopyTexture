@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Runtime.InteropServices;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,9 +16,11 @@ public class TestNativeCppRender : MonoBehaviour
     private byte[] _data = null;
     private RenderTexture _renderTexture;
 
+    private NativeArray<byte> _nativeArray;
+
     // PluginFunction
     [DllImport("nativecpprender")]
-    private static extern bool SetupNativeTextureRender(IntPtr textureId1, byte[] data, int width, int height);
+    unsafe private static extern bool SetupNativeTextureRender(IntPtr textureId1, void* data, int width, int height);
 
     [DllImport("nativecpprender")]
     private static extern void FinishNativeTextureRender();
@@ -24,7 +28,7 @@ public class TestNativeCppRender : MonoBehaviour
     [DllImport("nativecpprender")]
     private static extern IntPtr GetRenderEventFunc();
 
-    private void Start()
+    unsafe private void Start()
     {
         _renderTexture = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
         _renderTexture.Create();
@@ -33,8 +37,9 @@ public class TestNativeCppRender : MonoBehaviour
         _camera.targetTexture = _renderTexture;
 
         _data = new byte[_width * _height * 4];
+        _nativeArray = new NativeArray<byte>(_width * _height * 4, Allocator.Persistent);
         
-        if (SetupNativeTextureRender(_renderTexture.GetNativeTexturePtr(), _data, _renderTexture.width, _renderTexture.height) == false)
+        if (SetupNativeTextureRender(_renderTexture.GetNativeTexturePtr(), _nativeArray.GetUnsafePtr(), _renderTexture.width, _renderTexture.height) == false)
         {
             return;
         }
@@ -67,8 +72,9 @@ public class TestNativeCppRender : MonoBehaviour
         GL.IssuePluginEvent(GetRenderEventFunc(), eventID);
         RenderTexture.active = back;
 
-        Debug.Log(_data[0]);
-        Debug.Log(_data[1]);
+        Debug.Log("!!!!!!!!!!!!!!!!");
+        // Debug.Log(_data[0]);
+        // Debug.Log(_data[1]);
     }
 
     // private IEnumerator NativeTextureRenderLoop()

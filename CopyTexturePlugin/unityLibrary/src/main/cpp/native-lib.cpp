@@ -43,7 +43,7 @@ extern "C" void FinishNativeTextureRender()
     g_data = NULL;
 }
 
-static void ReadPixels(void* data)
+static void ReadPixels()
 {
 //    int currentFBO;
 //    glGetIntegerv(GL_FRAMEBUFFER, &currentFBO);
@@ -57,14 +57,14 @@ static void ReadPixels(void* data)
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, currentFBOWrite);
 
-    glReadPixels(0, 0, g_texWidth, g_texHeight, GL_RGBA, GL_UNSIGNED_BYTE, g_pBytes);
+    glReadPixels(0, 0, g_texWidth, g_texHeight, GL_RGBA, GL_UNSIGNED_BYTE, g_data);
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, currentFBORead);
 }
 
 static void UNITY_INTERFACE_API OnRenderEvent( int eventID )
 {
-    ReadPixels(g_data);
+    ReadPixels();
 }
 
 //static void UNITY_INTERFACE_API OnRenderEvent( int eventID )
