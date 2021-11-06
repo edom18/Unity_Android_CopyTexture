@@ -6,7 +6,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestNativeCppRender : MonoBehaviour
+public class CopyTextureData : MonoBehaviour
 {
     [SerializeField] private RawImage _rawImage = null;
     [SerializeField] private RawImage _resultImage = null;
@@ -19,7 +19,6 @@ public class TestNativeCppRender : MonoBehaviour
     private Texture2D _result;
     private NativeArray<byte> _nativeArray;
 
-    // PluginFunction
     [DllImport("copytexturedata")]
     unsafe private static extern bool SetNativeTexture(IntPtr textureId1, void* data, int width, int height);
 
