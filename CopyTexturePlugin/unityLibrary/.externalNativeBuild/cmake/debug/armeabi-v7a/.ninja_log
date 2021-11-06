@@ -1,9 +1,0 @@
-# ninja log v5
-0	386	0	CMakeFiles/native-lib.dir/native-lib.cpp.o	d033c83be881d1f9
-386	834	0	D:/MyDesktop/Unity-Projects/CopyTexture/CopyTexturePlugin/unityLibrary/build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-lib.so	850d7e72972c04c1
-0	488	0	CMakeFiles/native-lib.dir/native-lib.cpp.o	d033c83be881d1f9
-488	874	0	D:/MyDesktop/Unity-Projects/CopyTexture/CopyTexturePlugin/unityLibrary/build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-lib.so	850d7e72972c04c1
-2	402	0	CMakeFiles/native-lib.dir/native-lib.cpp.o	d033c83be881d1f9
-402	775	0	D:/MyDesktop/Unity-Projects/CopyTexture/CopyTexturePlugin/unityLibrary/build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-lib.so	850d7e72972c04c1
-2	441	0	CMakeFiles/native-lib.dir/native-lib.cpp.o	d033c83be881d1f9
-442	833	0	D:/MyDesktop/Unity-Projects/CopyTexture/CopyTexturePlugin/unityLibrary/build/intermediates/cmake/debug/obj/armeabi-v7a/libnative-lib.so	850d7e72972c04c1
