@@ -45,8 +45,7 @@ public class CopyTextureData : MonoBehaviour
         _data = new byte[_width * _height * 4];
         _nativeArray = new NativeArray<byte>(_width * _height * 4, Allocator.Persistent);
 
-        if (SetNativeTexture(_renderTexture.GetNativeTexturePtr(), _nativeArray.GetUnsafePtr(), _renderTexture.width,
-            _renderTexture.height) == false)
+        if (!SetNativeTexture(_renderTexture.GetNativeTexturePtr(), _nativeArray.GetUnsafePtr(), _renderTexture.width, _renderTexture.height))
         {
             return;
         }
