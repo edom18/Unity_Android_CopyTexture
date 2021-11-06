@@ -21,7 +21,7 @@ extern "C" bool SetNativeTexture(void* textureId, void* data, int width, int hei
     g_texWidth = width;
     g_texHeight = height;
 
-    LOG_PRINTF("SetupNativeTextureRender:%d, %d, %d", g_textureId, g_texWidth, g_texHeight);
+    LOG_PRINTF("SetNativeTexture:%d, %d, %d", g_textureId, g_texWidth, g_texHeight);
 
     return true;
 }
