@@ -20,17 +20,20 @@ public class TestNativeCppRender : MonoBehaviour
     private NativeArray<byte> _nativeArray;
 
     // PluginFunction
-    [DllImport("nativecpprender")]
-    unsafe private static extern bool SetupNativeTextureRender(IntPtr textureId1, void* data, int width, int height);
+    [DllImport("copytexturedata")]
+    unsafe private static extern bool SetNativeTexture(IntPtr textureId1, void* data, int width, int height);
 
-    [DllImport("nativecpprender")]
-    private static extern void FinishNativeTextureRender();
+    [DllImport("copytexturedata")]
+    private static extern void FinishNativeTexture();
 
-    [DllImport("nativecpprender")]
+    [DllImport("copytexturedata")]
     private static extern IntPtr GetRenderEventFunc();
 
     unsafe private void Start()
     {
+        _width = Screen.width;
+        _height = Screen.height;
+        
         _renderTexture = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
         _renderTexture.Create();
 
@@ -43,7 +46,7 @@ public class TestNativeCppRender : MonoBehaviour
         _data = new byte[_width * _height * 4];
         _nativeArray = new NativeArray<byte>(_width * _height * 4, Allocator.Persistent);
 
-        if (SetupNativeTextureRender(_renderTexture.GetNativeTexturePtr(), _nativeArray.GetUnsafePtr(), _renderTexture.width,
+        if (SetNativeTexture(_renderTexture.GetNativeTexturePtr(), _nativeArray.GetUnsafePtr(), _renderTexture.width,
             _renderTexture.height) == false)
         {
             return;
@@ -52,23 +55,11 @@ public class TestNativeCppRender : MonoBehaviour
         StartCoroutine(NativeTextureRenderLoop());
     }
 
-    private void Update()
-    {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                IssueEvent();
-            }
-        }
-    }
-
     private void OnDestroy()
     {
         _renderTexture.Release();
         _nativeArray.Dispose();
-        FinishNativeTextureRender();
+        FinishNativeTexture();
     }
 
     private void IssueEvent()
@@ -78,19 +69,10 @@ public class TestNativeCppRender : MonoBehaviour
         GL.IssuePluginEvent(GetRenderEventFunc(), 1);
         RenderTexture.active = back;
 
-        // Debug.Log("!!!!!!!!!!!!!!!!");
-
-        GetData();
+        _nativeArray.CopyTo(_data);
 
         _result.SetPixelData(_nativeArray, 0, 0);
         _result.Apply();
-
-        Debug.Log("==================");
-    }
-
-    private void GetData()
-    {
-        _nativeArray.CopyTo(_data);
     }
 
     private IEnumerator NativeTextureRenderLoop()
